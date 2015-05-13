@@ -51,7 +51,7 @@ gulp.task('build', ['scripts', 'styles', 'templates']);
 gulp.task('server', ['build'], function() {
     gulp.watch(paths.styles, ['styles']);
     gulp.watch(paths.scripts, ['scripts']);
-    gulp.watch(paths.templates, ['templates']);
+    gulp.watch(paths.templates.slice(0, 1), ['templates']);
 
     var options = {
         livereload: true,
