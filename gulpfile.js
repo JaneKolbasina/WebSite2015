@@ -4,13 +4,15 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     jade = require('gulp-jade'),
     uglifyjs = require('gulp-uglify'),
-    minifycss = require('gulp-minify-css');
+    minifycss = require('gulp-minify-css'),
+    imagemin = require('gulp-imagemin');
 
 var paths = {
     dest: 'public',
     styles: ['source/**/*.css'],
     scripts: ['source/**/*.js'],
-    templates: ['source/**/*.jade', '!source/**/_*.jade']
+    templates: ['source/**/*.jade', '!source/**/_*.jade'],
+    images: ['source/photos/*.jpg']
 };
 
 /*gulp.task('vendor.scripts', function() {
@@ -46,15 +48,25 @@ gulp.task('templates', function() {
         .pipe(gulp.dest(paths.dest));
 });
 
-gulp.task('build', ['scripts', 'styles', 'templates']);
+gulp.task('images', function() {
+    var options = {
+        progressive: true
+    };
+    return gulp.src(paths.images)
+        .pipe(imagemin(options))
+        .pipe(gulp.dest(paths.dest + '/photos'));
+});
+
+gulp.task('build', ['scripts', 'styles', 'templates', 'images']);
 
 gulp.task('server', ['build'], function() {
     gulp.watch(paths.styles, ['styles']);
     gulp.watch(paths.scripts, ['scripts']);
     gulp.watch(paths.templates.slice(0, 1), ['templates']);
+    gulp.watch(paths.images, ['images']);
 
     var options = {
-        livereload: true,
+        livereload: false,
         open: false
     };
     return gulp.src(paths.dest)

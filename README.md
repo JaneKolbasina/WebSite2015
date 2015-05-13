@@ -11,6 +11,9 @@ $ npm run build
 
 Список литературы:
 
+Gallery:
+    http://funcrisp.com/2015/04/07/20-beautiful-and-amazing-desktop-wallpapers/
+
 Development:
     https://nodejs.org/
     http://gulpjs.com/
