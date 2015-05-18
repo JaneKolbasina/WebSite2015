@@ -2,9 +2,10 @@ var gulp = require('gulp'),
     webserver = require('gulp-webserver'),
     watch = require('gulp-watch'),
     concat = require('gulp-concat'),
+    using = require('gulp-using'),
     jade = require('gulp-jade'),
-    uglifyjs = require('gulp-uglify'),
-    minifycss = require('gulp-minify-css'),
+    //uglifyjs = require('gulp-uglify'),
+    //minifycss = require('gulp-minify-css'),
     imagemin = require('gulp-imagemin');
 
 var paths = {
@@ -15,18 +16,20 @@ var paths = {
     images: ['source/photos/*.jpg']
 };
 
-/*gulp.task('vendor.scripts', function() {
+gulp.task('plugins', function() {
     var files = [
-        'bower_components/angular/angular.min.js',
-        'bower_components/angular-route/angular-route.min.js'
+        'bower_components/jquery/dist/**/*.*',
+        'bower_components/materialize/dist/**/*.*',
+        'bower_components/fancybox/source/**/*.*'
     ];
     return gulp.src(files)
-        .pipe(concat('vendor.js'))
-        .pipe(gulp.dest(paths.dest));
-});*/
+        .pipe(using())
+        .pipe(gulp.dest(paths.dest + '/plugins'));
+});
 
 gulp.task('scripts', function() {
     return gulp.src(paths.scripts)
+        .pipe(using())
         .pipe(concat('site.js'))
         //.pipe(uglifyjs())
         .pipe(gulp.dest(paths.dest));
@@ -34,6 +37,7 @@ gulp.task('scripts', function() {
 
 gulp.task('styles', function() {
     return gulp.src(paths.styles)
+        .pipe(using())
         .pipe(concat('site.css'))
         //.pipe(minifycss())
         .pipe(gulp.dest(paths.dest));
@@ -44,6 +48,7 @@ gulp.task('templates', function() {
         pretty: true
     };
     return gulp.src(paths.templates)
+        .pipe(using())
         .pipe(jade(options))
         .pipe(gulp.dest(paths.dest));
 });
@@ -53,17 +58,21 @@ gulp.task('images', function() {
         progressive: true
     };
     return gulp.src(paths.images)
+        .pipe(using())
         .pipe(imagemin(options))
         .pipe(gulp.dest(paths.dest + '/photos'));
 });
 
-gulp.task('build', ['scripts', 'styles', 'templates', 'images']);
+gulp.task('build', ['plugins', 'scripts', 'styles', 'templates', 'images']);
 
 gulp.task('server', ['build'], function() {
-    gulp.watch(paths.styles, ['styles']);
-    gulp.watch(paths.scripts, ['scripts']);
-    gulp.watch(paths.templates.slice(0, 1), ['templates']);
-    gulp.watch(paths.images, ['images']);
+    var all = function (source) {
+        return source.filter(function(path) { return path[0] != '!'; });
+    };
+    gulp.watch(all(paths.styles), ['styles']);
+    gulp.watch(all(paths.scripts), ['scripts']);
+    gulp.watch(all(paths.templates), ['templates']);
+    gulp.watch(all(paths.images), ['images']);
 
     var options = {
         livereload: false,

@@ -1,3 +1,15 @@
+mixin menu()
+    li
+        a(href="personal.html") Личная информация
+    li
+        a(href="services.html") Сервисы интернета
+    li
+        a(href="gallery.html") Галерея
+    li
+        a(href="hobby.html") Хобби
+    li
+        a(href="contact.html") Контакты
+
 doctype
 html
     head
@@ -7,35 +19,18 @@ html
         block title
             title 2015 - Jane Kolbasina
         meta(name='description', content='КУРСОВА РОБОТА З «ІНФОРМАТИКИ» НА ТЕМУ «СТВОРЕННЯ WEB-САЙТУ»')
-        link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/css/materialize.min.css', media="screen,projection")
-        link(rel='stylesheet', href='site.css', media="screen,projection")
-        block styles
+        style .side-nav { position: absolute; width: 0 }
+        link(rel='stylesheet', media="screen,projection", href='plugins/jquery.fancybox.css')
+        link(rel='stylesheet', media="screen,projection", href='plugins/css/materialize.min.css')
+        link(rel='stylesheet', media="screen,projection", href='site.css')
     body
         nav(class="light-blue lighten-1", role="navigation")
             div.nav-wrapper.container
                 a.brand-logo(id="logo-container", href="index.html") Jane
                 ul.right.hide-on-med-and-down
-                    li
-                        a(href="personal.html") Личная информация
-                    li
-                        a(href="services.html") Сервисы интернета
-                    li
-                        a(href="gallery.html") Галерея
-                    li
-                        a(href="hobby.html") Хобби
-                    li
-                        a(href="contact.html") Контакты
+                    +menu()
                 ul.side-nav(id="nav-mobile")
-                    li
-                        a(href="personal.html") Личная информация
-                    li
-                        a(href="services.html") Сервисы интернета
-                    li
-                        a(href="gallery.html") Галерея
-                    li
-                        a(href="hobby.html") Хобби
-                    li
-                        a(href="contact.html") Контакты
+                    +menu()
                 a(href="#", data-activates="nav-mobile", class="button-collapse")
                     i.mdi-navigation-menu
 
@@ -50,7 +45,7 @@ html
             div.section
                 block content
 
-        script(src='https://code.jquery.com/jquery-2.1.1.min.js')
-        script(src='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/js/materialize.min.js')
+        script(src='plugins/jquery.min.js')
+        script(src='plugins/jquery.fancybox.pack.js')
+        script(src='plugins/js/materialize.min.js')
         script(src='site.js')
-        block scripts
